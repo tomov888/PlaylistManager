@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "PlaylistManager.Infrastructure.Api.Serverless.AzureFunctions": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7093",
+      "launchBrowser": false
+    }
+  }
+}
