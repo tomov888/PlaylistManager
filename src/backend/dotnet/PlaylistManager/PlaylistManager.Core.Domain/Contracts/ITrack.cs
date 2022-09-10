@@ -1,6 +1,6 @@
 ﻿namespace PlaylistManager.Core.Domain.Contracts;
 
-public interface ISong: IDomainModel, IOwnedByUser
+public interface ITrack: IDomainModel, IOwnedByUser
 {
 	public string Name { get; init; }
 	public string Artist { get; init; }

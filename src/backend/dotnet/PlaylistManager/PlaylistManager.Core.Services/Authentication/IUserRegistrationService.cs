@@ -1,8 +1,11 @@
-﻿using PlaylistManager.Core.Domain.Models;
+﻿using PlaylistManager.Core.Common.Models;
+using PlaylistManager.Core.Contracts.Models.UseCases;
+using PlaylistManager.Core.Domain.Models;
 
 namespace PlaylistManager.Core.Services.Authentication;
 
 public interface IUserRegistrationService
 {
-	Task<User> RegisterUserAsync(string email, string userName, string password, DateTime dateOfBirth, string photoUrl);
+	Task<OperationResult<User>> RegisterUserAsync(UserRegistrationInfo userRegistrationInfo);
+	Task<User> TryRegisterUserAsync(UserRegistrationInfo userRegistrationInfo);
 }

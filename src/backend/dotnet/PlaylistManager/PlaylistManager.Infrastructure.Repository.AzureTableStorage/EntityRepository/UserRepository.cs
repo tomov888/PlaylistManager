@@ -23,29 +23,9 @@ public class UserRepository: AzureTableStorageRepository<UserEntity, User>, IUse
 		return user;
 	}
 
-	public async Task<User> TryRegisterUserAsync(string email, string username, string passwordHash, string passwordSalt, DateTime dateOfBirth, string photoUrl, AuthProvider authProvider)
+	public async Task<User> AddUserAsync(User user)
 	{
-		var userOption = await FindOneAsync(email, email);
-
-		if (userOption.HasValue) throw new Exception($"User with email {email} already exists");
-
-		var userEntity = new UserEntity
-		{
-			Email = email,
-			Id = email,
-			Timestamp = DateTimeOffset.UtcNow,
-			Username = username,
-			PartitionKey = email,
-			RowKey = email,
-			PasswordHash = passwordHash,
-			PasswordSalt = passwordSalt,
-			PhotoUrl = photoUrl,
-			CreatedAtUtc = DateTime.UtcNow,
-			DateOfBirth = dateOfBirth,
-			UpdatedAtUtc = DateTime.UtcNow,
-			Role = UserRole.User,
-			AuthProvider = authProvider
-		};
+		var userEntity = (UserEntity)user;
 
 		await InsertAsync(userEntity);
 

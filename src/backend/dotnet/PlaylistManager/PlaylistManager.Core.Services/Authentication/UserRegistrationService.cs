@@ -1,4 +1,6 @@
-﻿using PlaylistManager.Core.Common.Utils;
+﻿using PlaylistManager.Core.Common.Models;
+using PlaylistManager.Core.Common.Utils;
+using PlaylistManager.Core.Contracts.Models.UseCases;
 using PlaylistManager.Core.Contracts.Repository;
 using PlaylistManager.Core.Domain.Enums;
 using PlaylistManager.Core.Domain.Models;
@@ -14,15 +16,61 @@ namespace PlaylistManager.Core.Services.Authentication;
 			_userRepository = userRepository;
 		}
 
-		public async Task<User> RegisterUserAsync(string email, string userName, string password, DateTime dateOfBirth, string photoUrl)
+		public async Task<OperationResult<User>> RegisterUserAsync(UserRegistrationInfo userRegistrationInfo)
 		{
-			var userOption = await _userRepository.FindByEmailAsync(email);
-			if (userOption.HasValue) throw new Exception($"User with email {email} already exists");
+			var userOption = await _userRepository.FindByEmailAsync(userRegistrationInfo.Email);
+			
+			if (userOption.HasValue) 
+				return OperationResult<User>.Failure(new Exception($"User with email {userRegistrationInfo.Email} already exists"));
 
-			var passwordSalt = CryptographyProcessor.CreateSalt(email.Length);
-			var passwordHash = CryptographyProcessor.GenerateHash(password, passwordSalt);
+			var passwordSalt = CryptographyProcessor.CreateSalt(userRegistrationInfo.Email.Length);
+			var passwordHash = CryptographyProcessor.GenerateHash(userRegistrationInfo.Password, passwordSalt);
 
-			var user = await _userRepository.TryRegisterUserAsync(email, userName, passwordHash, passwordSalt, dateOfBirth, photoUrl, AuthProvider.SELF);
+			var userToCreate = new User
+			{
+				Email = userRegistrationInfo.Email,
+				Username = userRegistrationInfo.Username,
+				DateOfBirth = userRegistrationInfo.DateOfBirth,
+				PhotoUrl = userRegistrationInfo.PhotoUrl,
+				Id = userRegistrationInfo.Email,
+				Role = userRegistrationInfo.Role,
+				AuthProvider = userRegistrationInfo.AuthProvider,
+				PasswordHash = passwordHash,
+				PasswordSalt = passwordSalt,
+				CreatedAtUtc = DateTime.UtcNow,
+				UpdatedAtUtc = DateTime.UtcNow
+			};
+
+			var user = await _userRepository.AddUserAsync(userToCreate);
+			
+			return OperationResult<User>.Success(user);
+		}
+		
+		public async Task<User> TryRegisterUserAsync(UserRegistrationInfo userRegistrationInfo)
+		{
+			var userOption = await _userRepository.FindByEmailAsync(userRegistrationInfo.Email);
+			
+			if (userOption.HasValue) throw new Exception($"User with email {userRegistrationInfo.Email} already exists");
+
+			var passwordSalt = CryptographyProcessor.CreateSalt(userRegistrationInfo.Email.Length);
+			var passwordHash = CryptographyProcessor.GenerateHash(userRegistrationInfo.Password, passwordSalt);
+
+			var userToCreate = new User
+			{
+				Email = userRegistrationInfo.Email,
+				Username = userRegistrationInfo.Username,
+				DateOfBirth = userRegistrationInfo.DateOfBirth,
+				PhotoUrl = userRegistrationInfo.PhotoUrl,
+				Id = userRegistrationInfo.Email,
+				Role = userRegistrationInfo.Role,
+				AuthProvider = userRegistrationInfo.AuthProvider,
+				PasswordHash = passwordHash,
+				PasswordSalt = passwordSalt,
+				CreatedAtUtc = DateTime.UtcNow,
+				UpdatedAtUtc = DateTime.UtcNow
+			};
+
+			var user = await _userRepository.AddUserAsync(userToCreate);
 			
 			return user;
 		}

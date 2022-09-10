@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using PlaylistManager.Core.Common.Models;
 using PlaylistManager.Core.Common.Utils;
 using PlaylistManager.Core.Contracts.Models.Authentication;
 using PlaylistManager.Core.Contracts.Repository;
@@ -19,17 +20,40 @@ public class UserLoginService : IUserLoginService
 		_userRepository = userRepository;
 	}
 
-	public async Task<UserLoginResult> TryLoginAsync(string email, string password)
+	public async Task<OperationResult<UserLogin>> LoginAsync(string email, string password)
 	{
 		var userOption = await _userRepository.FindByEmailAsync(email);
+		
+		if(userOption.Empty) return OperationResult<UserLogin>.Failure(new Exception($"User with email: {email} does not exist"));
 
 		var isPasswordValid = CryptographyProcessor.AreEqual(password, userOption.Value.PasswordHash, userOption.Value.PasswordSalt);
 			
-		if (!isPasswordValid) throw new Exception("Invalid Password !!!");
+		if (!isPasswordValid) return OperationResult<UserLogin>.Failure(new Exception($"Invalid password !"));
 
 		var authenticationTokenPair = await _jwtService.GenerateTokenPairAsync(userOption.Value, new List<string>{"ADD", "REMOVE"});
 
-		var loginResult = new UserLoginResult 
+		var loginResult = new UserLogin 
+		{ 
+			Token = authenticationTokenPair.Token, 
+			RefreshToken = authenticationTokenPair.RefreshToken 
+		};
+
+		return OperationResult<UserLogin>.Success(loginResult);
+	}
+	
+	public async Task<UserLogin> TryLoginAsync(string email, string password)
+	{
+		var userOption = await _userRepository.FindByEmailAsync(email);
+		
+		if(userOption.Empty) throw new Exception($"User with email: {email} does not exist");
+
+		var isPasswordValid = CryptographyProcessor.AreEqual(password, userOption.Value.PasswordHash, userOption.Value.PasswordSalt);
+			
+		if (!isPasswordValid) throw new Exception($"Invalid password !");
+
+		var authenticationTokenPair = await _jwtService.GenerateTokenPairAsync(userOption.Value, new List<string>{"ADD", "REMOVE"});
+
+		var loginResult = new UserLogin 
 		{ 
 			Token = authenticationTokenPair.Token, 
 			RefreshToken = authenticationTokenPair.RefreshToken 

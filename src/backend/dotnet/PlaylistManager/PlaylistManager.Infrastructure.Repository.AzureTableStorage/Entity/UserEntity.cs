@@ -19,28 +19,6 @@ public record UserEntity : AzureTableStorageEntity, IUser
 	public UserRole Role { get; init; }
 	public AuthProvider AuthProvider { get; init; }
 
-	public static UserEntity From(IUser model)
-	{
-		return new UserEntity
-		{
-			PartitionKey = model.Email,
-			RowKey = model.Email,
-			Timestamp = DateTimeOffset.UtcNow,
-			
-			Email = model.Email,
-			Id = model.Email,
-			Username = model.Username,
-			DateOfBirth = model.DateOfBirth,
-			PhotoUrl = model.PhotoUrl,
-			PasswordHash = model.PasswordHash,
-			PasswordSalt = model.PasswordSalt,
-			CreatedAtUtc = model.CreatedAtUtc,
-			UpdatedAtUtc = model.UpdatedAtUtc,
-			Role = model.Role,
-			AuthProvider = model.AuthProvider
-		};
-	}
-
 	public static explicit operator UserEntity(User model)
 	{
 		return new UserEntity

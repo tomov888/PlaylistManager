@@ -2,7 +2,8 @@
 
 public enum UserRole
 {
-	None = 0,
-	User = 1,
-	Admin = 2
+	NONE = 0,
+	FREE_USER = 1,
+	PAID_USER = 2,
+	ADMIN = 3
 }

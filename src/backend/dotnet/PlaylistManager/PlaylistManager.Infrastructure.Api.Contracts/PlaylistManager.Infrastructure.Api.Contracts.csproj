@@ -10,4 +10,8 @@
       <Folder Include="Dto\Response" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\PlaylistManager.Core.Contracts\PlaylistManager.Core.Contracts.csproj" />
+    </ItemGroup>
+
 </Project>

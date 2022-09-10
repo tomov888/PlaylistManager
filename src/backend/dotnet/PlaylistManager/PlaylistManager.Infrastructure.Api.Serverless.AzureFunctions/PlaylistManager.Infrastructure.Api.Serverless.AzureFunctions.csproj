@@ -19,6 +19,7 @@
         </None>
     </ItemGroup>
     <ItemGroup>
+      <ProjectReference Include="..\PlaylistManager.Api.Serverless.AzureFunctions.Shared\PlaylistManager.Api.Serverless.AzureFunctions.Shared.csproj" />
       <ProjectReference Include="..\PlaylistManager.Core.Services\PlaylistManager.Core.Services.csproj" />
       <ProjectReference Include="..\PlaylistManager.Infrastructure.Api.Contracts\PlaylistManager.Infrastructure.Api.Contracts.csproj" />
       <ProjectReference Include="..\PlaylistManager.Infrastructure.Repository.AzureTableStorage\PlaylistManager.Infrastructure.Repository.AzureTableStorage.csproj" />
