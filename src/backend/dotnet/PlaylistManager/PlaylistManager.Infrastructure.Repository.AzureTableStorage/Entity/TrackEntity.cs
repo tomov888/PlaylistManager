@@ -12,8 +12,9 @@ public record TrackEntity : AzureTableStorageEntity, ITrack
 	public string Artist { get; init; }
 	public string Description { get; init; }
 	public int DurationInSeconds { get; init; }
-	public List<string> Tags { get; init; }
-	public DateTime ReleasedAtUtc { get; set; }
+	// public List<string> Tags { get; init; }
+	// public DateTime ReleasedAtUtc { get; init; }
+	public string FileUrl { get; init; }
 	
 	public static explicit operator TrackEntity(Track model)
 	{
@@ -27,12 +28,14 @@ public record TrackEntity : AzureTableStorageEntity, ITrack
 			Artist = model.Artist,
 			Name = model.Name,
 			Description = model.Description,
-			Tags = model.Tags,
+			// Tags = model.Tags,
+			// ReleasedAtUtc = model.ReleasedAtUtc,
 			UserEmail = model.UserEmail,
 			DurationInSeconds = model.DurationInSeconds,
-			ReleasedAtUtc = model.ReleasedAtUtc,
+			
 			CreatedAtUtc = model.CreatedAtUtc,
-			UpdatedAtUtc = model.UpdatedAtUtc
+			UpdatedAtUtc = model.UpdatedAtUtc,
+			FileUrl = model.FileUrl
 		};
 	}	
 	
@@ -44,12 +47,13 @@ public record TrackEntity : AzureTableStorageEntity, ITrack
 			Artist = model.Artist,
 			Name = model.Name,
 			Description = model.Description,
-			Tags = model.Tags,
+			// Tags = model.Tags,
 			UserEmail = model.UserEmail,
 			DurationInSeconds = model.DurationInSeconds,
-			ReleasedAtUtc = model.ReleasedAtUtc,
+			// ReleasedAtUtc = model.ReleasedAtUtc,
 			CreatedAtUtc = model.CreatedAtUtc,
-			UpdatedAtUtc = model.UpdatedAtUtc
+			UpdatedAtUtc = model.UpdatedAtUtc,
+			FileUrl = model.FileUrl
 		};
 	}		
 }

@@ -27,7 +27,7 @@ public class GetTracksEndpointFunction
 	}
 	
 	[FunctionName(nameof(GetTracksEndpointFunction))]
-	public async Task<IActionResult> Register([HttpTrigger(AuthorizationLevel.Function, "get", Route = "tracks")] HttpRequest req)
+	public async Task<IActionResult> GetTracks([HttpTrigger(AuthorizationLevel.Function, "get", Route = "tracks")] HttpRequest req)
 	{
 		var middleware = await _middlewarePipeline.AuthenticatedPipeline<List<Track>>(req, new List<Permission> { Permission.VIEW_SONGS });
 

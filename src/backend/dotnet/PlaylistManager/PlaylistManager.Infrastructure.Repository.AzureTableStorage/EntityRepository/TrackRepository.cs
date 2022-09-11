@@ -8,7 +8,7 @@ namespace PlaylistManager.Infrastructure.Repository.AzureTableStorage.EntityRepo
 
 public class TrackRepository: AzureTableStorageRepository<TrackEntity, Track>, ITrackRepository
 {
-	public TrackRepository(ILogger logger, TableServiceClient tableServiceClient) : base(logger, tableServiceClient)
+	public TrackRepository(ILogger<TrackRepository> logger, TableServiceClient tableServiceClient) : base(logger, tableServiceClient)
 	{
 		
 	}

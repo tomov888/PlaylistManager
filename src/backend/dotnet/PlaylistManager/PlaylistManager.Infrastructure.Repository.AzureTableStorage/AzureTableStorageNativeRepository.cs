@@ -48,7 +48,16 @@ public class AzureTableStorageNativeRepository<T> : IAzureTableStorageNativeRepo
 		{
 			ArgumentNullException.ThrowIfNull(entity, nameof(entity));
 
-			await _tableClient.AddEntityAsync(entity);
+			try
+			{
+				await _tableClient.AddEntityAsync(entity);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogCritical(ex, $"[{nameof(AzureTableStorageNativeRepository<T>)}] => Exception happened while inserting entity with PartitionKey: {entity.PartitionKey} and RowKey: {entity.RowKey}");
+				throw;
+			}
+			
 		}
 
 		public async Task UpsertAsync(T entity)

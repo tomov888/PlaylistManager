@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using Azure.Data.Tables;
+using Azure.Storage.Blobs;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,7 @@ using PlaylistManager.Core.Services.Authentication.JsonWebToken;
 using PlaylistManager.Core.Services.UseCases;
 using PlaylistManager.Infrastructure.Api.Serverless.AzureFunctions;
 using PlaylistManager.Infrastructure.Api.Service;
+using PlaylistManager.Infrastructure.Repository.AzureBlobStorage;
 using PlaylistManager.Infrastructure.Repository.AzureTableStorage.EntityRepository;
 using TokenHandler = PlaylistManager.Core.Services.Authentication.JsonWebToken.TokenHandler;
 
@@ -56,6 +58,8 @@ public class Startup : FunctionsStartup
 		builder.Services.AddScoped<IJwtService, JwtService>();
 		builder.Services.AddScoped<ITokenHandler, TokenHandler>();
 		builder.Services.AddScoped<IAuthorizeService, AuthorizeService>();
+
+		builder.Services.AddScoped<AzureBlobStorageFileRepository>();
 		
 		builder.Services.AddScoped<AzureFunctionsHttpMiddlewarePipelineFactory>();
 
@@ -66,6 +70,11 @@ public class Startup : FunctionsStartup
 				return new TableServiceClient("UseDevelopmentStorage=true", new TableClientOptions { Retry = { MaxRetries = 5 } });
 			});
 
+			azureClientsBuilder.AddClient<BlobContainerClient, BlobClientOptions>((options, _, _) =>
+			{
+				return new BlobContainerClient("UseDevelopmentStorage=true","playlist-manager");
+			});
+			
 			// azureClientsBuilder.AddClient<QueueClient, QueueClientOptions>((options, _, _) =>
 			// {
 			// 	options.Diagnostics.IsLoggingEnabled = false;

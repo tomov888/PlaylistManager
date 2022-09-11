@@ -4,10 +4,17 @@
         <AzureFunctionsVersion>V4</AzureFunctionsVersion>
     </PropertyGroup>
     <ItemGroup>
+        <PackageReference Include="Azure.Storage.Blobs" Version="12.13.1" />
         <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.1.1" />
         <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
         <PackageReference Include="Microsoft.Extensions.Azure" Version="1.2.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />        
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+        <PackageReference Include="MediaToolkit" Version="1.1.0.1" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
+        <PackageReference Include="VideoLibrary" Version="3.1.2" />
+        <PackageReference Include="NReco.VideoConverter" Version="1.1.4" />
+        <PackageReference Include="YoutubeExplode" Version="6.2.1" />
+        <PackageReference Include="YoutubeExplode.Converter" Version="6.2.1" />
     </ItemGroup>
     <ItemGroup>
         <None Update="host.json">
@@ -22,6 +29,7 @@
       <ProjectReference Include="..\PlaylistManager.Api.Serverless.AzureFunctions.Shared\PlaylistManager.Api.Serverless.AzureFunctions.Shared.csproj" />
       <ProjectReference Include="..\PlaylistManager.Core.Services\PlaylistManager.Core.Services.csproj" />
       <ProjectReference Include="..\PlaylistManager.Infrastructure.Api.Contracts\PlaylistManager.Infrastructure.Api.Contracts.csproj" />
+      <ProjectReference Include="..\PlaylistManager.Infrastructure.Repository.AzureBlobStorage\PlaylistManager.Infrastructure.Repository.AzureBlobStorage.csproj" />
       <ProjectReference Include="..\PlaylistManager.Infrastructure.Repository.AzureTableStorage\PlaylistManager.Infrastructure.Repository.AzureTableStorage.csproj" />
     </ItemGroup>
 </Project>
