@@ -11,6 +11,10 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using PlaylistManager.Api.Serverless.AzureFunctions.Middleware;
+using PlaylistManager.Core.Common.Extensions.FunctionalExtensions.OperationResultExtensions;
+using PlaylistManager.Core.Common.Models;
+using PlaylistManager.Core.Common.Utils;
+using PlaylistManager.Core.Contracts.Models.UseCases.VideoDownload;
 using PlaylistManager.Core.Contracts.Repository;
 using PlaylistManager.Core.Domain.Models;
 using PlaylistManager.Infrastructure.Api.Contracts.Dto.Request;
@@ -47,69 +51,57 @@ public class AddTrackFromYoutubeEndpointFunction
 		var requestBody = string.Empty;
 		using var streamReader = new StreamReader(req.Body);
 		requestBody = await streamReader.ReadToEndAsync();
-
-
 		var data = JsonConvert.DeserializeObject<AddTrackFromYoutubeRequestDto>(requestBody);
 
-		var youtubeVideo = await YouTube.Default.GetVideoAsync(data.YoutubeUrl);
+		var result = await Process(data, "test@test.com");
+
+		return result
+			.OnSuccess(x => (IActionResult)new OkObjectResult(x))
+			.OnFailure(x => new BadRequestObjectResult(x.Message))
+			.Finally();
+	}
+
+	public async Task<OperationResult<Track>> Process(AddTrackFromYoutubeRequestDto requestDto, string userEmail)
+	{
 		var tempFolder = Path.GetTempPath();
-		var trackId = Guid.NewGuid().ToString();
+		var trackFullName = $"{requestDto.Artist}-{requestDto.TrackName}";
+		var trackId = TrackId.New(trackFullName);
 		var videoDownloadDestination = Path.Combine(tempFolder, trackId);
 		var trackDownloadDestination = Path.Combine(tempFolder, $"{trackId}.mp3");
+		var blobStorageFilePath = Path.Combine(userEmail, Path.GetFileName(trackDownloadDestination));
 
 		try
 		{
-			_logger.LogWarning(
-				$"Downloading Video: {youtubeVideo.FullName} from url : {data.YoutubeUrl} to destination: {videoDownloadDestination}");
+			var videoDownloadResult = await DownloadYoutubeVideoAsync(requestDto, videoDownloadDestination);
+			var downloadedVideoInfo = videoDownloadResult.TryUnwrap();
+			
+			ConvertVideoToMp3(trackDownloadDestination, videoDownloadDestination);
 
-			var videoBytes = await youtubeVideo.GetBytesAsync();
+			var uploadResult = await UploadTrackFileToBlobStorageAsync(trackDownloadDestination, blobStorageFilePath);
+			var trackFileUrl = uploadResult.TryUnwrap().AbsoluteUri;
+			
+			var track = await AddTrackAsync(
+				userEmail, 
+				trackId, 
+				trackFullName,
+				requestDto.Artist, 
+				requestDto.TrackName, 
+				requestDto.Tags, 
+				trackFileUrl,
+				downloadedVideoInfo.LengthInSeconds 
+			);
 
-			_logger.LogWarning($"Video: {youtubeVideo.FullName} downloaded");
-
-			await File.WriteAllBytesAsync(videoDownloadDestination, videoBytes);
-
-			_logger.LogWarning($"Video download destination: {videoDownloadDestination}");
-			_logger.LogWarning($"Track download destination: {trackDownloadDestination}");
-
-			var inputFile = new MediaFile { Filename = videoDownloadDestination };
-			var outputFile = new MediaFile { Filename = trackDownloadDestination };
-
-			using (var engine = new Engine())
-			{
-				engine.GetMetadata(inputFile);
-				engine.Convert(inputFile, outputFile);
-			}
-
-			_logger.LogWarning($"Uploading track: {trackDownloadDestination} to blob storage...");
-			var uploadResult = await _blobStorageFileRepository.UploadFileAsync(trackDownloadDestination,
-				Path.Combine("test@test.com", Path.GetFileName(trackDownloadDestination)));
-			_logger.LogWarning($"Uploading track: {trackDownloadDestination} to blob storage done.");
-
-			var track = new Track
-			{
-				Artist = data.Artist,
-				Name = data.TrackName,
-				Description = $"{data.Artist}-{data.TrackName}",
-				Id = trackId,
-				UserEmail = "test@test.com",
-				Tags = new List<string>(),
-				DurationInSeconds = youtubeVideo.Info.LengthSeconds ?? -1,
-				ReleasedAtUtc = DateTime.UtcNow,
-				CreatedAtUtc = DateTime.UtcNow,
-				UpdatedAtUtc = DateTime.UtcNow,
-				FileUrl = uploadResult.Payload.AbsoluteUri
-			};
-
-			await _trackRepository.InsertAsync(track);
-
-			return new OkObjectResult(track);
+			return OperationResult<Track>.Success(track);
 		}
 		catch (Exception ex)
 		{
-			_logger.LogCritical(ex, $"Downloading video: {youtubeVideo.FullName} failed. ");
+			_logger.LogCritical(ex, $"Downloading video: {requestDto.YoutubeUrl} failed. ");
+			
 			File.Delete(videoDownloadDestination);
 			File.Delete(trackDownloadDestination);
-			return new BadRequestObjectResult(ex.Message);
+			await _trackRepository.DeleteAsync(userEmail, trackId);
+			
+			return OperationResult<Track>.Failure(ex);
 		}
 		finally
 		{
@@ -118,12 +110,81 @@ public class AddTrackFromYoutubeEndpointFunction
 			_logger.LogWarning($"Deleting: {trackDownloadDestination}");
 			File.Delete(trackDownloadDestination);
 		}
+	}
 
+	private async Task<Track> AddTrackAsync(
+		string userEmail,
+		string trackId,
+		string trackFullName,
+		string artist, 
+		string trackName, 
+		List<string> tags,
+		string trackFileUrl, 
+		int durationInSeconds)
+	{
+		var track = new Track
+		{
+			Artist = artist,
+			Name = trackName,
+			Description = trackFullName,
+			Id = trackId,
+			UserEmail = userEmail,
+			Tags = tags,
+			DurationInSeconds = durationInSeconds,
+			ReleasedAtUtc = DateTime.UtcNow,
+			CreatedAtUtc = DateTime.UtcNow,
+			UpdatedAtUtc = DateTime.UtcNow,
+			FileUrl = trackFileUrl
+		};
+		await _trackRepository.InsertAsync(track);
+		return track;
+	}
 
-		// var middleware = await _middlewarePipeline.AuthenticatedPipeline<Track>(req, new List<Permission> { Permission.VIEW_SONGS });
-		//
-		// return await middleware
-		// 	.WithExecutingAction((_, payload, session) => _useCase.GetTracksAsync(session.UserEmail))
-		// 	.ToIActionResultAsync();	
+	private async Task<OperationResult<Uri>> UploadTrackFileToBlobStorageAsync(string trackDownloadDestination, string blobStorageFilePath)
+	{
+		_logger.LogWarning($"Uploading track: {trackDownloadDestination} to blob storage destination: {blobStorageFilePath}");
+		var uploadResult = await _blobStorageFileRepository.UploadFileAsync(trackDownloadDestination, blobStorageFilePath);
+		_logger.LogWarning($"Uploading track: {trackDownloadDestination} to blob storage done.");
+		return uploadResult;
+	}
+
+	private void ConvertVideoToMp3(string trackDownloadDestination, string videoDownloadDestination)
+	{
+		_logger.LogWarning($"Converting video to track: {trackDownloadDestination}");
+		var inputFile = new MediaFile { Filename = videoDownloadDestination };
+		var outputFile = new MediaFile { Filename = trackDownloadDestination };
+		using (var engine = new Engine())
+		{
+			engine.GetMetadata(inputFile);
+			engine.Convert(inputFile, outputFile);
+		}
+		_logger.LogWarning($"Video conversion finished. Track destination: {trackDownloadDestination}");
+	}
+
+	private async Task<OperationResult<YoutubeVideoInfo>> DownloadYoutubeVideoAsync(AddTrackFromYoutubeRequestDto requestDto, string videoDownloadDestination)
+	{
+		try
+		{
+			var youtubeVideo = await YouTube.Default.GetVideoAsync(requestDto.YoutubeUrl);
+			_logger.LogWarning($"Downloading Video: {requestDto.YoutubeUrl} to destination: {videoDownloadDestination}");
+			var videoBytes = await youtubeVideo.GetBytesAsync();
+			await File.WriteAllBytesAsync(videoDownloadDestination, videoBytes);
+			_logger.LogWarning($"Video: {requestDto.YoutubeUrl} downloaded");
+
+			var videoInfo =  new YoutubeVideoInfo
+			(
+				youtubeVideo.Title,
+				youtubeVideo.Info.LengthSeconds ?? -1,
+				youtubeVideo.ContentLength ?? -1,
+				youtubeVideo.Uri
+			);
+
+			return OperationResult<YoutubeVideoInfo>.Success(videoInfo);
+		}
+		catch (Exception ex)
+		{
+			_logger.LogCritical(ex,$"Failed to download Video: {requestDto.YoutubeUrl}.");
+			return OperationResult<YoutubeVideoInfo>.Failure(ex);
+		}
 	}
 }

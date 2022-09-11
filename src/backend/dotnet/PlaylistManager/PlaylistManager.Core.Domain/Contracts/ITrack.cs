@@ -6,7 +6,5 @@ public interface ITrack: IDomainModel, IOwnedByUser
 	public string Artist { get; init; }
 	public string Description { get; init; }
 	public int DurationInSeconds { get; init; }
-	// public List<string> Tags { get; init; }
-	// public DateTime ReleasedAtUtc { get; init; }
 	public string FileUrl { get; init; }
 }

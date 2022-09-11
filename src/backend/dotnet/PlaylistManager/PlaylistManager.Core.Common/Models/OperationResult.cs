@@ -39,4 +39,9 @@ public class OperationResult<T>
 		if (IsFailure) action.Invoke(FailureReason);
 		return this;
 	}
+
+	public T TryUnwrap() => IsSuccess ? Payload : throw FailureReason;
+	public T Unwrap(T defaultValue) => IsFailure ? defaultValue : Payload;
+
+
 }

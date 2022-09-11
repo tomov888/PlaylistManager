@@ -19,3 +19,16 @@ http://localhost:7071/api/login
 
 ######################################################
 
+http://localhost:7071/api/tracks
+
+######################################################
+
+http://localhost:7071/api/tracks/add-youtube-track
+{
+	"youtubeUrl":"https://www.youtube.com/watch?v=zA52uNzx7Y4&ab_channel=malawolf85",
+	"trackName":"Blue (Da Ba Dee)",
+	"artist":"Eiffel 65",
+	"tags":["90s", "techno"]
+}
+
+######################################################
