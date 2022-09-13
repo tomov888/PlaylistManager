@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using PlaylistManager.Core.Domain.Enums;
-using PlaylistManager.Infrastructure.Api.Service;
+using PlaylistManager.Infrastructure.Api.Contracts.Service;
 
 namespace PlaylistManager.Api.Serverless.AzureFunctions.Middleware;
 

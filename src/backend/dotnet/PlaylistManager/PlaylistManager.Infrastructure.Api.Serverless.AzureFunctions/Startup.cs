@@ -9,10 +9,12 @@ using Microsoft.IdentityModel.Tokens;
 using PlaylistManager.Api.Serverless.AzureFunctions.Middleware;
 using PlaylistManager.Core.Contracts.Models.Authentication;
 using PlaylistManager.Core.Contracts.Repository;
+using PlaylistManager.Core.Contracts.Service;
 using PlaylistManager.Core.Contracts.UseCase;
 using PlaylistManager.Core.Services.Authentication;
 using PlaylistManager.Core.Services.Authentication.JsonWebToken;
 using PlaylistManager.Core.Services.UseCases;
+using PlaylistManager.Infrastructure.Api.Contracts.Service;
 using PlaylistManager.Infrastructure.Api.Serverless.AzureFunctions;
 using PlaylistManager.Infrastructure.Api.Service;
 using PlaylistManager.Infrastructure.Repository.AzureBlobStorage;
@@ -60,6 +62,11 @@ public class Startup : FunctionsStartup
 		builder.Services.AddScoped<IAuthorizeService, AuthorizeService>();
 
 		builder.Services.AddScoped<AzureBlobStorageFileRepository>();
+
+		builder.Services.AddScoped<IFileSystemVideoToMp3Converter, FileSystemVideoToMp3Converter>(); 
+		builder.Services.AddScoped<IFileSystemYoutubeVideoDownloader, FileSystemYoutubeVideoDownloader>();
+		builder.Services.AddScoped<IFileSystemToBlobStorageTrackUploadService,FileSystemToAzureBlobStorageTrackUploadService>();
+		builder.Services.AddScoped<IYoutubeTrackDownloadUseCase, AzureStorageYoutubeTrackDownloadUseCase>();
 		
 		builder.Services.AddScoped<AzureFunctionsHttpMiddlewarePipelineFactory>();
 

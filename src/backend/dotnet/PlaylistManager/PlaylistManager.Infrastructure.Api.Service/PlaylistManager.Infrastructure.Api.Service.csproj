@@ -10,10 +10,14 @@
       <ProjectReference Include="..\PlaylistManager.Core.Common\PlaylistManager.Core.Common.csproj" />
       <ProjectReference Include="..\PlaylistManager.Core.Domain\PlaylistManager.Core.Domain.csproj" />
       <ProjectReference Include="..\PlaylistManager.Core.Services\PlaylistManager.Core.Services.csproj" />
+      <ProjectReference Include="..\PlaylistManager.Infrastructure.Api.Contracts\PlaylistManager.Infrastructure.Api.Contracts.csproj" />
+      <ProjectReference Include="..\PlaylistManager.Infrastructure.Repository.AzureBlobStorage\PlaylistManager.Infrastructure.Repository.AzureBlobStorage.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="MediaToolkit" Version="1.1.0.1" />
       <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.1.0" />
+      <PackageReference Include="VideoLibrary" Version="3.1.2" />
     </ItemGroup>
 
 </Project>

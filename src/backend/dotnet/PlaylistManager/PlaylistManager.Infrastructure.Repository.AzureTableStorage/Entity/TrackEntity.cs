@@ -12,6 +12,7 @@ public record TrackEntity : AzureTableStorageEntity, ITrack
 	public string Artist { get; init; }
 	public string Description { get; init; }
 	public int DurationInSeconds { get; init; }
+	public long SizeInBytes { get; init; }
 	public string Tags { get; init; }
 	public string FileUrl { get; init; }
 	
@@ -32,7 +33,8 @@ public record TrackEntity : AzureTableStorageEntity, ITrack
 			DurationInSeconds = model.DurationInSeconds,
 			CreatedAtUtc = model.CreatedAtUtc,
 			UpdatedAtUtc = model.UpdatedAtUtc,
-			FileUrl = model.FileUrl
+			FileUrl = model.FileUrl,
+			SizeInBytes = model.SizeInBytes
 		};
 	}	
 	
@@ -49,7 +51,8 @@ public record TrackEntity : AzureTableStorageEntity, ITrack
 			DurationInSeconds = model.DurationInSeconds,
 			CreatedAtUtc = model.CreatedAtUtc,
 			UpdatedAtUtc = model.UpdatedAtUtc,
-			FileUrl = model.FileUrl
+			FileUrl = model.FileUrl,
+			SizeInBytes = model.SizeInBytes
 		};
 	}		
 }

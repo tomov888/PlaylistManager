@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using PlaylistManager.Core.Common.Models;
+﻿using PlaylistManager.Core.Common.Models;
 using PlaylistManager.Core.Domain.Enums;
 using PlaylistManager.Core.Domain.Models;
+using Microsoft.AspNetCore.Http;
 
-namespace PlaylistManager.Infrastructure.Api.Service;
+namespace PlaylistManager.Infrastructure.Api.Contracts.Service;
 
 public interface IAuthorizeService
 {

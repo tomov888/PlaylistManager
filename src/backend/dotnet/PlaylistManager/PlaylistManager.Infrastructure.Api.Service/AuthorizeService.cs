@@ -1,10 +1,12 @@
-﻿using Google.Apis.Logging;
+﻿using System.Security.Authentication;
+using Google.Apis.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using PlaylistManager.Core.Common.Models;
 using PlaylistManager.Core.Domain.Enums;
 using PlaylistManager.Core.Domain.Models;
 using PlaylistManager.Core.Services.Authentication.JsonWebToken;
+using PlaylistManager.Infrastructure.Api.Contracts.Service;
 
 namespace PlaylistManager.Infrastructure.Api.Service;
 
@@ -23,7 +25,7 @@ public class AuthorizeService: IAuthorizeService
 	{
 		var token = httpRequest.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 		
-		if(token is null) return OperationResult<UserSession>.Failure(new Exception($"Request does not contain jwt."));
+		if(token is null) return OperationResult<UserSession>.Failure(new AuthenticationException($"Request does not contain jwt."));
 
 		try
 		{

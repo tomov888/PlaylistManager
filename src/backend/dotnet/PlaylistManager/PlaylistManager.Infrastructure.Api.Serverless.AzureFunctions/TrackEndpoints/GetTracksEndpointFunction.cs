@@ -34,12 +34,5 @@ public class GetTracksEndpointFunction
 		return await middleware
 			.WithExecutingAction((_, payload, session) => _useCase.GetTracksAsync(session.UserEmail))
 			.ToIActionResultAsync();	
-		
-		// var middleware = await _middlewarePipeline.AnonymousPipeline<List<Track>>(req);
-		//
-		// return await middleware
-		// 	.WithRequestValidation((req, _) => { if (userId is null) throw new Exception("HEHEHEHE"); })
-		// 	.WithExecutingAction((_, payload, _) => _useCase.GetTracksAsync(userId))
-		// 	.ToIActionResultAsync();		
 	}
 }

@@ -6,5 +6,6 @@ public interface ITrack: IDomainModel, IOwnedByUser
 	public string Artist { get; init; }
 	public string Description { get; init; }
 	public int DurationInSeconds { get; init; }
+	public long SizeInBytes { get; init; }
 	public string FileUrl { get; init; }
 }
