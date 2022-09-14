@@ -18,6 +18,7 @@ public record UserEntity : AzureTableStorageEntity, IUser
 	public string PhotoUrl { get; init; }
 	public UserRole Role { get; init; }
 	public AuthProvider AuthProvider { get; init; }
+	public string RefreshToken { get; init; }
 
 	public static explicit operator UserEntity(User model)
 	{
@@ -37,7 +38,8 @@ public record UserEntity : AzureTableStorageEntity, IUser
 			CreatedAtUtc = model.CreatedAtUtc,
 			UpdatedAtUtc = model.UpdatedAtUtc,
 			Role = model.Role,
-			AuthProvider = model.AuthProvider
+			AuthProvider = model.AuthProvider,
+			RefreshToken = model.RefreshToken
 		};
 	}
 	
@@ -55,7 +57,8 @@ public record UserEntity : AzureTableStorageEntity, IUser
 			CreatedAtUtc = model.CreatedAtUtc,
 			UpdatedAtUtc = model.UpdatedAtUtc,
 			Role = model.Role,
-			AuthProvider = model.AuthProvider
+			AuthProvider = model.AuthProvider,
+			RefreshToken = model.RefreshToken
 		};
 	}
 	

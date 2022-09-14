@@ -12,9 +12,11 @@
       <ProjectReference Include="..\PlaylistManager.Core.Services\PlaylistManager.Core.Services.csproj" />
       <ProjectReference Include="..\PlaylistManager.Infrastructure.Api.Contracts\PlaylistManager.Infrastructure.Api.Contracts.csproj" />
       <ProjectReference Include="..\PlaylistManager.Infrastructure.Repository.AzureBlobStorage\PlaylistManager.Infrastructure.Repository.AzureBlobStorage.csproj" />
+      <ProjectReference Include="..\PlaylistManager.Services.Azure.Shared\PlaylistManager.Services.Azure.Shared.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Azure.Storage.Queues" Version="12.11.1" />
       <PackageReference Include="MediaToolkit" Version="1.1.0.1" />
       <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.1.0" />
       <PackageReference Include="VideoLibrary" Version="3.1.2" />

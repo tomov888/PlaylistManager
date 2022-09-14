@@ -31,4 +31,14 @@ public class UserRepository: AzureTableStorageRepository<UserEntity, User>, IUse
 
 		return DomainModel(userEntity);
 	}
+	
+	public async Task<User> UpsertUserAsync(User user)
+	{
+		var userEntity = (UserEntity)user;
+
+		await UpsertAsync(userEntity);
+
+		return DomainModel(userEntity);
+	}
+
 }

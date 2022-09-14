@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "PlaylistManager.Services.Azure.Api.Serverless": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7174",
+      "launchBrowser": false
+    }
+  }
+}

@@ -16,6 +16,7 @@ using PlaylistManager.Core.Contracts.UseCase;
 using PlaylistManager.Core.Domain.Enums;
 using PlaylistManager.Core.Domain.Models;
 using PlaylistManager.Infrastructure.Api.Contracts.Dto.Request;
+using PlaylistManager.Infrastructure.Api.Contracts.Service;
 
 namespace PlaylistManager.Infrastructure.Api.Serverless.AzureFunctions.TrackEndpoints;
 
@@ -24,15 +25,18 @@ public class AddTrackFromYoutubeEndpointFunction
 	private readonly ILogger<GetTracksEndpointFunction> _logger;
 	private readonly AzureFunctionsHttpMiddlewarePipelineFactory _middlewarePipeline;
 	private readonly IYoutubeTrackDownloadUseCase _useCase;
+	private readonly IYoutubeTrackDownloadQueueProducer _queueProducer;
 
 	public AddTrackFromYoutubeEndpointFunction(
 		ILogger<GetTracksEndpointFunction> logger,
 		AzureFunctionsHttpMiddlewarePipelineFactory middlewarePipeline,
-		IYoutubeTrackDownloadUseCase useCase)
+		IYoutubeTrackDownloadUseCase useCase, 
+		IYoutubeTrackDownloadQueueProducer queueProducer)
 	{
 		_logger = logger;
 		_middlewarePipeline = middlewarePipeline;
 		_useCase = useCase;
+		_queueProducer = queueProducer;
 	}
 
 	[FunctionName(nameof(AddTrackFromYoutubeEndpointFunction))]
@@ -41,10 +45,10 @@ public class AddTrackFromYoutubeEndpointFunction
 		HttpRequest req,
 		ExecutionContext context)
 	{
-		var middleware = await _middlewarePipeline.AuthenticatedPipeline<AddTrackFromYoutubeRequestDto, OperationResult<Track>>(req, new List<Permission> { Permission.VIEW_SONGS });
+		var middleware = await _middlewarePipeline.AuthenticatedPipeline<AddTrackFromYoutubeRequestDto, OperationResult<AddTrackFromYoutubeRequest>>(req, new List<Permission> { Permission.VIEW_SONGS });
 
 		var middlewareResult = await middleware
-			.WithExecutingAction((_, payload, session) => _useCase.DownloadTrackFromYoutubeAsync(
+			.WithExecutingAction((_, payload, session) => _queueProducer.EnqueueYoutubeTrackDownloadRequestAsync(
 				new AddTrackFromYoutubeRequest
 				{
 					Artist = payload.Artist,

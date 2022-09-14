@@ -13,4 +13,5 @@ public interface IUser: IDomainModel
 	public string PhotoUrl { get; init; }
 	public UserRole Role { get; init; }
 	public AuthProvider AuthProvider { get; init; }
+	public string RefreshToken { get; init; }
 }

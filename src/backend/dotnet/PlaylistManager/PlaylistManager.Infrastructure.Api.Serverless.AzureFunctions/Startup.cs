@@ -2,6 +2,7 @@
 using System.Text;
 using Azure.Data.Tables;
 using Azure.Storage.Blobs;
+using Azure.Storage.Queues;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,7 +36,7 @@ public class Startup : FunctionsStartup
 		{
 			Issuer = "PlaylistManager",
 			Secret = "super-secret-super-secret-super-secret-super-secret-super-secret",
-			TokenLifetime = TimeSpan.FromMinutes(60)
+			TokenLifetime = TimeSpan.FromSeconds(6000)
 		};
 		builder.Services.AddSingleton(authConfig);
 		var tokenValidationParameters = new TokenValidationParameters
@@ -67,6 +68,7 @@ public class Startup : FunctionsStartup
 		builder.Services.AddScoped<IFileSystemYoutubeVideoDownloader, FileSystemYoutubeVideoDownloader>();
 		builder.Services.AddScoped<IFileSystemToBlobStorageTrackUploadService,FileSystemToAzureBlobStorageTrackUploadService>();
 		builder.Services.AddScoped<IYoutubeTrackDownloadUseCase, AzureStorageYoutubeTrackDownloadUseCase>();
+		builder.Services.AddScoped<IYoutubeTrackDownloadQueueProducer, YoutubeTrackDownloadAzureQueueStorageProducer>();
 		
 		builder.Services.AddScoped<AzureFunctionsHttpMiddlewarePipelineFactory>();
 
@@ -84,14 +86,7 @@ public class Startup : FunctionsStartup
 			
 			// azureClientsBuilder.AddClient<QueueClient, QueueClientOptions>((options, _, _) =>
 			// {
-			// 	options.Diagnostics.IsLoggingEnabled = false;
-			// 	options.MessageEncoding = QueueMessageEncoding.Base64;
-			//
-			// 	var queueClient = new QueueClient(azureStorageQueueSettings.AzureStorageAccount, azureStorageQueueSettings.QueueName, options);
-			//
-			// 	queueClient.CreateIfNotExists();
-			//
-			// 	return queueClient;
+			// 	return new QueueClient("UseDevelopmentStorage=true", "");	
 			// });
 		});
 	}

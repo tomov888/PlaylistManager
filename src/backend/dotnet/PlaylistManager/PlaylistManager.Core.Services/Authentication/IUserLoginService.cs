@@ -7,4 +7,5 @@ public interface IUserLoginService
 {
 	Task<OperationResult<UserLogin>> LoginAsync(string email, string password);
 	Task<UserLogin> TryLoginAsync(string email, string password);
+	Task<UserLogin> TryRefreshTokenAsync(string token, string refreshToken);
 }
