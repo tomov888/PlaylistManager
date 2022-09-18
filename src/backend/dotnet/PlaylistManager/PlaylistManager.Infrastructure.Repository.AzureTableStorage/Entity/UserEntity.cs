@@ -26,7 +26,7 @@ public record UserEntity : AzureTableStorageEntity, IUser
 		{
 			PartitionKey = model.Email,
 			RowKey = model.Email,
-			Timestamp = DateTimeOffset.UtcNow,
+			Timestamp = model.CreatedAtUtc,
 			
 			Email = model.Email,
 			Id = model.Email,

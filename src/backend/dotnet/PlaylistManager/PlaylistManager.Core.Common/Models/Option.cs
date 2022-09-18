@@ -31,8 +31,41 @@ public class Option<T> : IEnumerable<T>
 		return GetEnumerator();
 	}
 
+	public Option<T> OnValue(Action<T> action)
+	{
+		if(HasValue) action.Invoke(Value);
+		
+		return this;
+	}
+	
+	public Option<T> OnValue(Action action)
+	{
+		if(HasValue) action.Invoke();
+		
+		return this;
+	}
+
+	public Option<T> OnEmpty(Action action)
+	{
+		if (Empty) action.Invoke();
+
+		return this;
+	}
+
+
 	public Option<TOut> Map<TOut>(Func<T, TOut> mapper)
 		=> HasValue 
 			? Option<TOut>.Of(mapper.Invoke(Value)) 
 			: Option<TOut>.None;
+	
+	public T TryUnwrap()
+		=> HasValue 
+			? Value 
+			: throw new Exception($"Option<{typeof(T)}> holds no value.");
+
+	public T Unwrap(T defaultValue)
+		=> HasValue 
+			? Value 
+			: defaultValue;
+
 }

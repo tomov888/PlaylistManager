@@ -170,7 +170,10 @@ namespace PlaylistManager.Api.Serverless.AzureFunctions.Middleware;
 				try
 				{
 					string requestBody = await new StreamReader(_request.Body).ReadToEndAsync();
-					_requestPayload = JsonConvert.DeserializeObject<TRequestPayload>(requestBody);
+					var deserializedPayload = JsonConvert.DeserializeObject<TRequestPayload>(requestBody);
+
+					if (deserializedPayload is null) throw new Exception($"Request body is required for this request");
+					_requestPayload = deserializedPayload;
 				}
 				catch (Exception e)
 				{

@@ -7,7 +7,7 @@ namespace PlaylistManager.Infrastructure.Repository.AzureTableStorage.Entity;
 [TableName("track")]
 public record TrackEntity : AzureTableStorageEntity, ITrack
 {
-	public string UserEmail { get; set; }
+	public string UserEmail { get; init; }
 	public string Name { get; init; }
 	public string Artist { get; init; }
 	public string Description { get; init; }
@@ -22,7 +22,7 @@ public record TrackEntity : AzureTableStorageEntity, ITrack
 		{
 			PartitionKey = model.UserEmail,
 			RowKey = model.Id,
-			Timestamp = DateTimeOffset.UtcNow,
+			Timestamp = model.CreatedAtUtc,
 			
 			Id = model.Id,
 			Artist = model.Artist,

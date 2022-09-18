@@ -54,9 +54,13 @@ public class Startup : FunctionsStartup
 		
 		builder.Services.AddScoped<IUserRepository, UserRepository>();
 		builder.Services.AddScoped<ITrackRepository, TrackRepository>();
+		builder.Services.AddScoped<IPlaylistRepository, PlaylistRepository>();
 		builder.Services.AddScoped<IUserRegistrationService, UserRegistrationService>();
 		builder.Services.AddScoped<IUserLoginService, UserLoginService>();
 		builder.Services.AddScoped<IGetTracksUseCase, GetTracksUseCase>();
+		builder.Services.AddScoped<IGetPlaylistsUseCase, GetPlaylistsUseCase>();
+		builder.Services.AddScoped<IAddPlaylistUseCase, AddPlaylistUseCase>();
+		builder.Services.AddScoped<IDeletePlaylistUseCase, DeletePlaylistUseCase>();
 		
 		builder.Services.AddScoped<IJwtService, JwtService>();
 		builder.Services.AddScoped<ITokenHandler, TokenHandler>();
@@ -84,10 +88,11 @@ public class Startup : FunctionsStartup
 				return new BlobContainerClient("UseDevelopmentStorage=true","playlist-manager");
 			});
 			
-			// azureClientsBuilder.AddClient<QueueClient, QueueClientOptions>((options, _, _) =>
-			// {
-			// 	return new QueueClient("UseDevelopmentStorage=true", "");	
-			// });
+			azureClientsBuilder.AddClient<QueueClient, QueueClientOptions>((options, _, _) =>
+			{
+				options.MessageEncoding = QueueMessageEncoding.Base64;
+				return new QueueClient("UseDevelopmentStorage=true", "youtube-track-download-queue", options);	
+			});
 		});
 	}
 }

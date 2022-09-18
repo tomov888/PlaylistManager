@@ -2,5 +2,5 @@
 
 public interface IOwnedByUser
 {
-	public string UserEmail { get; set; }
+	public string UserEmail { get; init; }
 }

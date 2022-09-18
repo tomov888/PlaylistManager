@@ -24,18 +24,15 @@ public class AddTrackFromYoutubeEndpointFunction
 {
 	private readonly ILogger<GetTracksEndpointFunction> _logger;
 	private readonly AzureFunctionsHttpMiddlewarePipelineFactory _middlewarePipeline;
-	private readonly IYoutubeTrackDownloadUseCase _useCase;
 	private readonly IYoutubeTrackDownloadQueueProducer _queueProducer;
 
 	public AddTrackFromYoutubeEndpointFunction(
 		ILogger<GetTracksEndpointFunction> logger,
 		AzureFunctionsHttpMiddlewarePipelineFactory middlewarePipeline,
-		IYoutubeTrackDownloadUseCase useCase, 
 		IYoutubeTrackDownloadQueueProducer queueProducer)
 	{
 		_logger = logger;
 		_middlewarePipeline = middlewarePipeline;
-		_useCase = useCase;
 		_queueProducer = queueProducer;
 	}
 

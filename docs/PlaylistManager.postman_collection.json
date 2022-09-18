@@ -1,0 +1,277 @@
+{
+	"info": {
+		"_postman_id": "1834a46a-5e5f-437c-949f-b2c3f91c1bed",
+		"name": "PlaylistManager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2213007"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"email\":\"test@test.com\",\r\n\t\"username\":\"test\",\r\n\t\"password\":\"1234\",\r\n\t\"dateOfBirth\":\"2012-04-23T18:25:43.511Z\",\r\n\t\"photoUrl\":null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7071/api/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7071",
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"email\":\"test@test.com\",\r\n\t\"password\":\"1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7071/api/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7071",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTracks",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4OTk2ODQwNy0xNjc1LTRkMjctOWM2NC1jZGNhZDY1YzAzMjYiLCJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwidXNlcklkIjoidGVzdEB0ZXN0LmNvbSIsInVzZXJuYW1lIjoidGVzdCIsImF1dGhQcm92aWRlciI6IlNFTEYiLCJyb2xlIjoiRlJFRV9VU0VSIiwicGVybWlzc2lvbnMiOiJBREQsUkVNT1ZFIiwidXNlclJvbGUiOiJGUkVFX1VTRVIiLCJ1c2VyRW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwic2Vzc2lvbklkIjoiNTBlZGI1ZWYtMjcxMi00ODU3LWI5MGYtNjYwNzM5YzhmNTEzIiwicGhvdG9VcmwiOiIiLCJuYmYiOjE2NjM0OTIwNzgsImV4cCI6MTY2MzQ5ODA3OCwiaWF0IjoxNjYzNDkyMDc4LCJpc3MiOiJQbGF5bGlzdE1hbmFnZXIifQ.t9o_3K7Kb5_1dS_HYXGl8nyUl_trFD9I6y_wo-5w1vs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:7071/api/tracks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7071",
+					"path": [
+						"api",
+						"tracks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddYoutubeTrack",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4OTk2ODQwNy0xNjc1LTRkMjctOWM2NC1jZGNhZDY1YzAzMjYiLCJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwidXNlcklkIjoidGVzdEB0ZXN0LmNvbSIsInVzZXJuYW1lIjoidGVzdCIsImF1dGhQcm92aWRlciI6IlNFTEYiLCJyb2xlIjoiRlJFRV9VU0VSIiwicGVybWlzc2lvbnMiOiJBREQsUkVNT1ZFIiwidXNlclJvbGUiOiJGUkVFX1VTRVIiLCJ1c2VyRW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwic2Vzc2lvbklkIjoiNTBlZGI1ZWYtMjcxMi00ODU3LWI5MGYtNjYwNzM5YzhmNTEzIiwicGhvdG9VcmwiOiIiLCJuYmYiOjE2NjM0OTIwNzgsImV4cCI6MTY2MzQ5ODA3OCwiaWF0IjoxNjYzNDkyMDc4LCJpc3MiOiJQbGF5bGlzdE1hbmFnZXIifQ.t9o_3K7Kb5_1dS_HYXGl8nyUl_trFD9I6y_wo-5w1vs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"youtubeUrl\":\"https://www.youtube.com/watch?v=ZfgLKBfgkEA&ab_channel=QuiGonDrip\",\r\n\t\"trackName\":\"Better marry a women uglier than you\",\r\n\t\"artist\":\"Soldier Boy\",\r\n\t\"tags\":[\"50s\", \"retro\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7071/api/tracks/add-youtube-track",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7071",
+					"path": [
+						"api",
+						"tracks",
+						"add-youtube-track"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RefreshToken",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2YmY5MDJmMy04NTRlLTRkZDktYmI0My0yZjY4NjA3NzliYjMiLCJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwidXNlcklkIjoidGVzdEB0ZXN0LmNvbSIsInVzZXJuYW1lIjoidGVzdCIsImF1dGhQcm92aWRlciI6IlNFTEYiLCJyb2xlIjoiRlJFRV9VU0VSIiwicGVybWlzc2lvbnMiOiJBREQsUkVNT1ZFIiwidXNlclJvbGUiOiJGUkVFX1VTRVIiLCJ1c2VyRW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwic2Vzc2lvbklkIjoiOGM2ZDIzODQtN2I5Yy00MGM0LWE0NDUtNGJiMzI2ZWU0M2ZhIiwicGhvdG9VcmwiOiIiLCJuYmYiOjE2NjMxODI4OTEsImV4cCI6MTY2MzE4NjQ5MSwiaWF0IjoxNjYzMTgyODkxLCJpc3MiOiJQbGF5bGlzdE1hbmFnZXIifQ.8V3LhjHMltp47QRXpWatQXZXst3J75iYO4FKrZrnwuw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2NjBhNTE4Mi1iMDNhLTRlOGMtYTI0NS05ZGNlM2IxNzljZjkiLCJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwidXNlcklkIjoidGVzdEB0ZXN0LmNvbSIsInVzZXJuYW1lIjoidGVzdCIsImF1dGhQcm92aWRlciI6IlNFTEYiLCJyb2xlIjoiRlJFRV9VU0VSIiwicGVybWlzc2lvbnMiOiJBREQsUkVNT1ZFIiwidXNlclJvbGUiOiJGUkVFX1VTRVIiLCJ1c2VyRW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwic2Vzc2lvbklkIjoiZGIwNjUxODUtYjFmMC00YWZkLWIyNjctZDMzOTZkNzAyODgyIiwicGhvdG9VcmwiOiIiLCJuYmYiOjE2NjMxODM1MjAsImV4cCI6MTY2MzE4MzUzMCwiaWF0IjoxNjYzMTgzNTIwLCJpc3MiOiJQbGF5bGlzdE1hbmFnZXIifQ.W8oVBKoHmdhdq8G6ssPDFbNNjoZs4v0nPBg7EPKJu4U\",\r\n\t\"refreshToken\": \"f52231f1-4172-4f80-b11d-7038c96bb3e7\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7071/api/refresh-token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7071",
+					"path": [
+						"api",
+						"refresh-token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddPlaylist",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlMjE2NTlmMy05Y2UzLTRiODItOTAzMC1kOGMzZGUyNmZlZGEiLCJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwidXNlcklkIjoidGVzdEB0ZXN0LmNvbSIsInVzZXJuYW1lIjoidGVzdCIsImF1dGhQcm92aWRlciI6IlNFTEYiLCJyb2xlIjoiRlJFRV9VU0VSIiwicGVybWlzc2lvbnMiOiJBREQsUkVNT1ZFIiwidXNlclJvbGUiOiJGUkVFX1VTRVIiLCJ1c2VyRW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwic2Vzc2lvbklkIjoiNGFiMzRkODItMjI0OS00NzU2LTk1MWYtMjZiMzVjMThiNDQ1IiwicGhvdG9VcmwiOiIiLCJuYmYiOjE2NjM1MDI5NDQsImV4cCI6MTY2MzUwODk0NCwiaWF0IjoxNjYzNTAyOTQ0LCJpc3MiOiJQbGF5bGlzdE1hbmFnZXIifQ.Y9ShPmFU4wWUy_BEkhPRsqZKrO6Upvrbcqxee5TPMck",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"name\":\"90s\",\r\n\t\"tags\":[\r\n\t\t\"90s\"\r\n\t]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7071/api/playlists",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7071",
+					"path": [
+						"api",
+						"playlists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeletePlaylist",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlMjE2NTlmMy05Y2UzLTRiODItOTAzMC1kOGMzZGUyNmZlZGEiLCJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwidXNlcklkIjoidGVzdEB0ZXN0LmNvbSIsInVzZXJuYW1lIjoidGVzdCIsImF1dGhQcm92aWRlciI6IlNFTEYiLCJyb2xlIjoiRlJFRV9VU0VSIiwicGVybWlzc2lvbnMiOiJBREQsUkVNT1ZFIiwidXNlclJvbGUiOiJGUkVFX1VTRVIiLCJ1c2VyRW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwic2Vzc2lvbklkIjoiNGFiMzRkODItMjI0OS00NzU2LTk1MWYtMjZiMzVjMThiNDQ1IiwicGhvdG9VcmwiOiIiLCJuYmYiOjE2NjM1MDI5NDQsImV4cCI6MTY2MzUwODk0NCwiaWF0IjoxNjYzNTAyOTQ0LCJpc3MiOiJQbGF5bGlzdE1hbmFnZXIifQ.Y9ShPmFU4wWUy_BEkhPRsqZKrO6Upvrbcqxee5TPMck",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:7071/api/playlists/12466a6f-338d-4505-aafa-388df931c983",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7071",
+					"path": [
+						"api",
+						"playlists",
+						"12466a6f-338d-4505-aafa-388df931c983"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetPlaylists",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlMjE2NTlmMy05Y2UzLTRiODItOTAzMC1kOGMzZGUyNmZlZGEiLCJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwidXNlcklkIjoidGVzdEB0ZXN0LmNvbSIsInVzZXJuYW1lIjoidGVzdCIsImF1dGhQcm92aWRlciI6IlNFTEYiLCJyb2xlIjoiRlJFRV9VU0VSIiwicGVybWlzc2lvbnMiOiJBREQsUkVNT1ZFIiwidXNlclJvbGUiOiJGUkVFX1VTRVIiLCJ1c2VyRW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwic2Vzc2lvbklkIjoiNGFiMzRkODItMjI0OS00NzU2LTk1MWYtMjZiMzVjMThiNDQ1IiwicGhvdG9VcmwiOiIiLCJuYmYiOjE2NjM1MDI5NDQsImV4cCI6MTY2MzUwODk0NCwiaWF0IjoxNjYzNTAyOTQ0LCJpc3MiOiJQbGF5bGlzdE1hbmFnZXIifQ.Y9ShPmFU4wWUy_BEkhPRsqZKrO6Upvrbcqxee5TPMck",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:7071/api/playlists",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7071",
+					"path": [
+						"api",
+						"playlists"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

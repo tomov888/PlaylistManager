@@ -36,8 +36,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PlaylistManager.Services.Az
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaylistManager.Services.Azure.Shared", "PlaylistManager.Services.Azure.Shared\PlaylistManager.Services.Azure.Shared.csproj", "{DE26760F-1EED-40ED-A77B-C643EA3308E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaylistManager.Services.Azure.Api.Serverless", "PlaylistManager.Services.Azure.Api.Serverless\PlaylistManager.Services.Azure.Api.Serverless.csproj", "{3D5FA1CD-E6D6-439A-B341-68C1D61DA9FC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaylistManager.YoutubeTrackDownloadService.Serverless", "PlaylistManager.YoutubeTrackDownloadService.Serverless\PlaylistManager.YoutubeTrackDownloadService.Serverless.csproj", "{5FFAFDB2-1A04-458D-A7A3-6400625F138E}"
 EndProject
 Global
@@ -90,10 +88,6 @@ Global
 		{DE26760F-1EED-40ED-A77B-C643EA3308E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE26760F-1EED-40ED-A77B-C643EA3308E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE26760F-1EED-40ED-A77B-C643EA3308E1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3D5FA1CD-E6D6-439A-B341-68C1D61DA9FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3D5FA1CD-E6D6-439A-B341-68C1D61DA9FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3D5FA1CD-E6D6-439A-B341-68C1D61DA9FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3D5FA1CD-E6D6-439A-B341-68C1D61DA9FC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5FFAFDB2-1A04-458D-A7A3-6400625F138E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5FFAFDB2-1A04-458D-A7A3-6400625F138E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FFAFDB2-1A04-458D-A7A3-6400625F138E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -115,7 +109,6 @@ Global
 		{77EE8645-8EFD-402B-B84D-4B0DC2150A75} = {EE4195A8-D961-4BF4-9EA4-22BA74104E6E}
 		{D574C87E-B45F-482A-A888-03A19F5C3059} = {D72C2F3F-53C2-461D-934F-9BAEA7A9860D}
 		{DE26760F-1EED-40ED-A77B-C643EA3308E1} = {D574C87E-B45F-482A-A888-03A19F5C3059}
-		{3D5FA1CD-E6D6-439A-B341-68C1D61DA9FC} = {D574C87E-B45F-482A-A888-03A19F5C3059}
 		{5FFAFDB2-1A04-458D-A7A3-6400625F138E} = {D574C87E-B45F-482A-A888-03A19F5C3059}
 	EndGlobalSection
 EndGlobal
